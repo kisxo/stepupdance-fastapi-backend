@@ -1,6 +1,8 @@
 from typing import Annotated, Optional
+from fastapi import HTTPException
 from pydantic import ConfigDict, BaseModel, Field, EmailStr
 from pydantic.functional_validators import BeforeValidator
+from app.config.db import users_collection
 
 # Represents an ObjectId field in the database.
 # It will be represented as a `str` on the model so that it can be serialized to JSON.
@@ -22,3 +24,7 @@ class UserCreate(UserBase):
 class UserUpdate(UserBase):
     phone: int | None = None
     password: str | None = None
+
+async def get_user(phone: int):
+    if ( user := await users_collection.find_one({"phone": phone})) is not None:
+        return user
