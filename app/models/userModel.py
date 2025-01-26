@@ -25,6 +25,10 @@ class UserUpdate(UserBase):
     phone: int | None = None
     password: str | None = None
 
+class UserAuth(BaseModel):
+    phone: int
+    password: str
+
 async def get_user(phone: int):
     if ( user := await users_collection.find_one({"phone": phone})) is not None:
         return user
