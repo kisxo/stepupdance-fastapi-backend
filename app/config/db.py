@@ -12,8 +12,11 @@ MONGO_CONNECTION_STRING = f"mongodb+srv://{settings.MONGO_USERNAME}:{settings.MO
 try:
     client = AsyncIOMotorClient(MONGO_CONNECTION_STRING)
     db = client[settings.MONGO_DATABASE]
+
     users_collection = db.get_collection("users")
     participants_collection = db.get_collection("participants")
+    events_collection = db.get_collection("events")
+
     client.admin.command('ping')
     print("Successfully connected to MongoDB!")
 except :
