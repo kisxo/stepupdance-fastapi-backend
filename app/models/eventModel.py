@@ -22,3 +22,7 @@ async def get_events_by_category(category: str):
 
 async def get_all_events():
     return EventsCollection(events = await events_collection.find().to_list(50))
+
+async def get_event(id: str):
+    if ( event := await events_collection.find_one(ObjectId(id))) is not None:
+        return event
