@@ -1,7 +1,7 @@
 from typing import Union
 
 from fastapi import Depends, FastAPI
-from app.routers import users, token, events
+from app.routers import users, token, events, participants
 from app.config.db import db
 
 app = FastAPI()
@@ -28,4 +28,10 @@ app.include_router(
     events.router,
     prefix="/events",
     tags=["events"],
+)
+
+app.include_router(
+    participants.router,
+    prefix="/participants",
+    tags=["participants"],
 )
