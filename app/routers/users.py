@@ -1,7 +1,8 @@
+from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.models.userModel import User, UserCreate, UserBase, get_user
 from app.config.db import users_collection
-from app.utils.auth import get_password_hash
+from app.utils.auth import get_current_active_user, get_password_hash
 
 router = APIRouter()
 
@@ -27,3 +28,6 @@ async def create_user(user: UserCreate):
     )
     return created_student
 
+@router.get("/", response_model=UserBase)
+async def check_user(current_user: Annotated[User, Depends(get_current_active_user)]):
+    return current_user
