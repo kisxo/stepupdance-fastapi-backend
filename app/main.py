@@ -3,8 +3,22 @@ from typing import Union
 from fastapi import Depends, FastAPI
 from app.routers import users, token, events, participants
 from app.config.db import db
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+app = FastAPI(
+    root_path="/api",
+)
+origins = [
+    "http://localhost:5173",
+    "http://localhost:8000",
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 print(db)
 
