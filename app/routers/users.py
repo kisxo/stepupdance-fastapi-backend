@@ -31,3 +31,11 @@ async def create_user(user: UserCreate):
 @router.get("/", response_model=UserBase)
 async def check_user(current_user: Annotated[User, Depends(get_current_active_user)]):
     return current_user
+
+@router.get("/check")
+async def check_user(phone: int) -> bool:
+    user = await get_user(phone)
+    if user is None:
+        return False
+    else:
+        return True
