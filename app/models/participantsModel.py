@@ -48,12 +48,12 @@ class SoloParticipantCreate(ParticipantBase):
 
 class InputParticipant(BaseModel):
     eventId: PyObjectId
-    fname: str | None
-    age: int | None
-    gender: int | None
-    duo_name1: str | None
-    duo_name2: str | None
-    group_name: str | None
+    fname: str | None = Field(default=None)
+    age: int | None = Field(default=None)
+    gender: str | None = Field(default=None)
+    duo_name1: str | None = Field(default=None)
+    duo_name2: str | None = Field(default=None)
+    group_name: str | None = Field(default=None)
 
 async def get_user_participants(id: PyObjectId):
     return ParticipantsCollection(participants = await participants_collection.find({"creator": str(id)}).to_list())
