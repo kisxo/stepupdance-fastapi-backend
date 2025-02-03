@@ -17,22 +17,23 @@ class Participant(ParticipantBase):
     creator: PyObjectId
     creator_phone: int
     event_detail: Event
+    payment_method: str | None = Field(default=None)
     payment_amount: int
     payment_status: bool = False
     verified: bool = False
-    type: str
-    fname: str | None
-    age: int | None
-    gender:  str | None
-    duo_name1: str | None
-    duo_name2: str | None
-    group_name: str | None
+    type: str | None = Field(default=None)
+    fname: str | None = Field(default=None)
+    age: int | None = Field(default=None)
+    gender:  str | None = Field(default=None)
+    duo_name1: str | None = Field(default=None)
+    duo_name2: str | None = Field(default=None)
+    group_name: str | None = Field(default=None)
 
 class ParticipantsCollection(BaseModel):
     participants: List[Participant]
 
 class GroupParticipantCreate(ParticipantBase):
-    type: str = "group"
+    type: str = Field(default="group")
     group_name: str
     
 class DuoParticipantCreate(ParticipantBase):
@@ -41,7 +42,7 @@ class DuoParticipantCreate(ParticipantBase):
     duo_name2: str
 
 class SoloParticipantCreate(ParticipantBase):
-    type: str = "solo"
+    type: str = Field(default="solo")
     fname: str
     age: str
     gender: str
