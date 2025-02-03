@@ -64,10 +64,12 @@ def validate_register_data(participant: InputParticipant, event: Event) -> bool:
     if event["title"] == "Dance Duo":
         if participant.duo_name1 is None or participant.duo_name2 is None:
             raise HTTPException(status_code=400, detail="Duo names are required!")
-        
     elif event["title"] == "Dance Group":
         if participant.group_name is None:
             raise HTTPException(status_code=400, detail="Group name is required!")
+    else:
+        if participant.fname is None or participant.age is None or participant.gender is None:
+            raise HTTPException(status_code=400, detail="Full name, age and gender is required!")
 
     return True
 
