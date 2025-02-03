@@ -79,6 +79,6 @@ async def get_current_active_user(
     return current_user
 
 def check_password_strength(password: str) -> bool:
-    if (len(password) < 5):
+    if (len(password) < 6):
         raise HTTPException(status_code=400, detail="Password must longer than 6 characters !")
     return True
