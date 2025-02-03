@@ -77,3 +77,8 @@ async def get_current_active_user(
     # if current_user.disabled:
     #     raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
+
+def check_password_strength(password: str) -> bool:
+    if (len(password) < 5):
+        raise HTTPException(status_code=400, detail="Password must longer than 6 characters !")
+    return True
