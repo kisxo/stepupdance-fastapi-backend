@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.models.userModel import User, UserCreate, UserBase, get_user
 from app.config.db import users_collection
 from app.utils.auth import get_current_active_user, get_password_hash
+from app.utils.phone import phone_lookup
 
 router = APIRouter()
 
@@ -14,11 +15,11 @@ router = APIRouter()
     response_model_by_alias=False,
 )
 async def create_user(user: UserCreate):
+    phone_lookup(user.phone)
+
     if ( await get_user(user.phone)) is not None:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User already exists !",
-        )
+        raise HTTPException(status_code=400, detail="User already exists !")
+    
     user.password = get_password_hash(user.password)
     new_student = await users_collection.insert_one(
         user.model_dump(by_alias=True, exclude=["id"])
@@ -34,6 +35,8 @@ async def check_user(current_user: Annotated[User, Depends(get_current_active_us
 
 @router.get("/check")
 async def check_user(phone: int) -> bool:
+    phone_lookup(phone)
+
     user = await get_user(phone)
     if user is None:
         return False
