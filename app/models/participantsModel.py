@@ -13,6 +13,13 @@ class ParticipantBase(BaseModel):
 
 class Participant(ParticipantBase):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    fname: str | None = Field(default=None)
+    age: int | None = Field(default=None)
+    gender:  str | None = Field(default=None)
+    duo_name1: str | None = Field(default=None)
+    duo_name2: str | None = Field(default=None)
+    group_name: str | None = Field(default=None)
+    type: str | None = Field(default=None)
     registered_datetime: str
     creator: PyObjectId
     creator_phone: int
@@ -21,13 +28,6 @@ class Participant(ParticipantBase):
     payment_amount: int
     payment_status: bool = False
     verified: bool = False
-    type: str | None = Field(default=None)
-    fname: str | None = Field(default=None)
-    age: int | None = Field(default=None)
-    gender:  str | None = Field(default=None)
-    duo_name1: str | None = Field(default=None)
-    duo_name2: str | None = Field(default=None)
-    group_name: str | None = Field(default=None)
 
 class ParticipantsCollection(BaseModel):
     participants: List[Participant]
