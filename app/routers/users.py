@@ -14,20 +14,26 @@ router = APIRouter()
     status_code=status.HTTP_201_CREATED,
     response_model_by_alias=False,
 )
-async def create_user(user: UserCreate):
-    phone_lookup(user.phone)
+async def create_user(input_user: UserCreate):
+    phone_lookup(input_user.phone)
 
-    if ( await get_user(user.phone)) is not None:
+    if ( await get_user(input_user.phone)) is not None:
         raise HTTPException(status_code=400, detail="User already exists !")
     
-    user.password = get_password_hash(user.password)
-    new_student = await users_collection.insert_one(
+    input_user.password = get_password_hash(input_user.password)
+
+    user = User(
+        phone= input_user.phone,
+        password= input_user.password
+    )
+
+    new_user = await users_collection.insert_one(
         user.model_dump(by_alias=True, exclude=["id"])
     )
-    created_student = await users_collection.find_one(
-        {"_id": new_student.inserted_id}
+    created_user = await users_collection.find_one(
+        {"_id": new_user.inserted_id}
     )
-    return created_student
+    return created_user
 
 @router.get("/", response_model=UserBase)
 async def check_user(current_user: Annotated[User, Depends(get_current_active_user)]):
