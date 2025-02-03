@@ -17,6 +17,9 @@ class User(UserBase):
     # but provided as `id` in the API requests and responses.
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     password: str
+    admin: bool = Field(default=False)
+    verified: bool = Field(default=False)
+    disabled: bool = Field(default=False)
 
 class UserCreate(UserBase):
     password: str
