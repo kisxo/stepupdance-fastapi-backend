@@ -6,7 +6,7 @@ from app.models.participantsModel import SoloParticipantCreate, DuoParticipantCr
 from app.models.eventModel import get_event, Event
 from app.utils.auth import get_current_active_user
 from app.config.db import participants_collection
-from app.utils.participantValidator import validate_input_data, check_duplicate
+from app.utils.participantValidator import validate_input_data, check_duplicate, verify_requirements
 
 router = APIRouter()
 
@@ -26,6 +26,8 @@ async def add_participant(
     validate_input_data(input_data, event)
 
     await check_duplicate(input_data, event, current_user)
+
+    verify_requirements(input_data, event, current_user)
 
     participant = Participant(
         registered_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
@@ -51,6 +53,8 @@ async def add_participant(
         participant.fname = input_data.fname
         participant.age = input_data.age
         participant.gender = input_data.gender
+
+    print(participant)
 
     new_participant = await participants_collection.insert_one(
         participant.model_dump(by_alias=True, exclude=["id"])
