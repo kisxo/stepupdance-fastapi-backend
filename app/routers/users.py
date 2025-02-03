@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.models.userModel import User, UserCreate, UserBase, get_user
 from app.config.db import users_collection
-from app.utils.auth import get_current_active_user, get_password_hash
+from app.utils.auth import get_current_active_user, get_password_hash, check_password_strength
 from app.utils.phone import phone_lookup
 
 router = APIRouter()
@@ -16,6 +16,7 @@ router = APIRouter()
 )
 async def create_user(input_user: UserCreate):
     phone_lookup(input_user.phone)
+    check_password_strength(input_user.password)
 
     if ( await get_user(input_user.phone)) is not None:
         raise HTTPException(status_code=400, detail="User already exists !")
