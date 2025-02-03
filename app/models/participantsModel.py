@@ -36,7 +36,7 @@ class GroupParticipantCreate(ParticipantBase):
     group_name: str
     
 class DuoParticipantCreate(ParticipantBase):
-    type: str = "duo"
+    type: str = Field(default="duo") 
     duo_name1: str
     duo_name2: str
 
