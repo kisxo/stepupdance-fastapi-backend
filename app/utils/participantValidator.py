@@ -47,9 +47,7 @@ async def check_duplicate(participant: InputParticipant, event: Event, user: Use
         query_params = {
             "creator": str(user["_id"]),
             "eventId": str(event["_id"]),
-            "fname": participant.fname,
-            "age": participant.age,
-            "gender": participant.gender,
+            "fname": participant.fname
         }
 
     query = await participants_collection.find(query_params).to_list()
