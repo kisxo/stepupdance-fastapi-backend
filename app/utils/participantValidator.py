@@ -73,7 +73,7 @@ def verify_name(name: str) -> bool:
         raise HTTPException(status_code=400, detail="Name is invalid!")
     
 def verify_age(age: int, min: int, max: int) -> bool:
-    if(age < min and age > max):
+    if(age < min or age > max):
         raise HTTPException(status_code=400, detail="Participant age is invalid!")
     
     return True
