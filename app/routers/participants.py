@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from app.models.userModel import User
 from app.models.participantsModel import SoloParticipantCreate, DuoParticipantCreate, Participant, InputParticipant, get_user_participants, ParticipantsCollection
 from app.models.eventModel import get_event, Event
@@ -17,7 +17,8 @@ async def list_participants(current_user: Annotated[User, Depends(get_current_ac
 @router.post("/")
 async def add_participant(
     current_user: Annotated[User, Depends(get_current_active_user)],
-    input_data: InputParticipant
+    input_data: InputParticipant,
+    response: Response
 ):  
     # check if provided eventId exists 
     if ( event := await get_event(input_data.eventId)) is None:
@@ -62,5 +63,5 @@ async def add_participant(
     created_participant = await participants_collection.find_one(
         {"_id": new_participant.inserted_id}
     )
-
+    response.status_code = status.HTTP_201_CREATED
     return {"detail": "Register Successful"}
