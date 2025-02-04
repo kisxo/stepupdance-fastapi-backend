@@ -41,11 +41,11 @@ async def check_user(current_user: Annotated[User, Depends(get_current_active_us
     return current_user
 
 @router.get("/check")
-async def check_user(phone: int) -> bool:
+async def check_user(phone: int) -> dict:
     phone_lookup(phone)
 
     user = await get_user(phone)
     if user is None:
-        return False
+        return {"userExists": False}
     else:
-        return True
+        return {"userExists": True}
