@@ -78,12 +78,12 @@ def verify_requirements(participant: InputParticipant, event: Event, user: User)
        
 def verify_name(name: str) -> bool:
     if (len(name) < 6):
-        raise HTTPException(status_code=400, detail="Name is invalid!")
+        raise HTTPException(status_code=400, detail="Enter full name !")
 
     if name.replace(" ", "").isalpha() == True:
         return True
     else:
-        raise HTTPException(status_code=400, detail="Name is invalid!")
+        raise HTTPException(status_code=400, detail="Enter full name !")
     
 def verify_age(age: int, min: int= 4, max: int= 50) -> bool:
     if(age < min or age > max):
