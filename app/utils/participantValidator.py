@@ -60,8 +60,21 @@ async def check_duplicate(participant: InputParticipant, event: Event, user: Use
 
 def verify_requirements(participant: InputParticipant, event: Event, user: User) -> bool:
     if event["title"] == "Dance Solo":
-       verify_name(participant.fname)
-       verify_age(participant.age)
+        verify_name(participant.fname)
+        verify_age(participant.age)
+
+    elif event["title"] == "Dance Duo":
+        verify_name(participant.duo_name1)
+        verify_name(participant.duo_name2)
+
+    elif event["title"] == "Dance Group":
+        verify_name(participant.group_name)
+        
+    else:
+        verify_name(participant.fname)
+        verify_age(participant.age)
+
+    return True
        
 def verify_name(name: str) -> bool:
     if (len(name) < 6):
