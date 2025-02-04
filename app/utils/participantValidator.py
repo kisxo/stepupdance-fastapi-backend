@@ -59,7 +59,17 @@ async def check_duplicate(participant: InputParticipant, event: Event, user: Use
     return True
 
 def verify_requirements(participant: InputParticipant, event: Event, user: User) -> bool:
-   if event["title"] == "Dance Solo":
+    if event["title"] == "Dance Solo":
+       verify_name(participant.fname)
        if participant.age < 4 or participant.age > 60:
            raise HTTPException(status_code=400, detail="Participant age is invalid!")
+       
+def verify_name(name: str) -> bool:
+    if (len(name) < 6):
+        raise HTTPException(status_code=400, detail="Name is invalid!")
+
+    if name.replace(" ", "").isalpha() == True:
+        return True
+    else:
+        raise HTTPException(status_code=400, detail="Name is invalid!")
     
